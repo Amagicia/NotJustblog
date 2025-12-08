@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="Css/style.css">
+
+<body class="bg-zinc-700 flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md bg-zinc-200 p-8 rounded-2xl shadow-lg space-y-6">
+
+        <h2 class="text-3xl font-bold text-center text-gray-800">
+            Login Account
+        </h2>
+
+        <form class="space-y-4" action="/login" method="post">
+
+
+            <div>
+                <label class="block text-gray-700 mb-1">Email</label>
+                <input type="email" placeholder="amn@gmail.com" name="email"
+                    class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <div>
+                <label class="block text-gray-700 mb-1">Password</label>
+                <input type="password" placeholder="••••••••" name="password"
+                    class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+
+            <button type="submit"
+                class="w-full bg-blue-600 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-700 transition">
+                Login
+            </button>
+
+        </form>
+
+        <p class="text-center text-gray-600 text-sm">
+            Don't have an account?
+            <a href="/register" class="text-blue-600 font-medium hover:underline">Register</a>
+        </p>
+
+    </div>
+
+</body>
+
+</html>

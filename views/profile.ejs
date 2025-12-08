@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dark Blog - Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* small helper to smooth the like button animation */
+        .like-heart {
+            transition: transform .12s ease, fill .12s ease, stroke .12s ease;
+        }
+
+        .like-heart:active {
+            transform: scale(.95);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100 antialiased min-h-screen">
+    <div class="max-w-6xl mx-auto p-6">
+        <!-- Header / Top side profile -->
+         <div>
+            <span class="m-5 p-3"> <a href="/"
+                class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 
+                       5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M18 12H9m9 0l-3 3m3-3l-3-3" />
+                </svg>
+                Explore
+            </a></span>
+         </div>
+        <header class="flex items-top justify-between gap-4 mb-8">
+            <div class="flex items-center gap-6">
+                <img src="https://i.pravatar.cc/80?img=12" alt="avatar"
+                    class="w-20 h-20 rounded-full border-2 border-gray-700 shadow-md" />
+                <div>
+                    <h1 class="py-2 text-2xl text-yellow-500 font-semibold">
+                        <%= data.name.charAt(0).toUpperCase() + data.name.slice(1) %>
+
+                    </h1>
+                    <p class="py-1 text-xl text-gray-400">
+                        <%= data.username%>
+                    </p>
+                    <p class="text-xl py-1 text-gray-400">
+                        <%= data.age%>
+                    </p>
+                    <p class="text-xl py-1 text-gray-400">
+                        <%= data.email%>
+                    </p>
+
+                    <span class="px-2 py-1 text-xs bg-gray-800 rounded">
+                        <%= data.phone%>
+                    </span>
+                    <div class="mt-3 flex items-center gap-2">
+                        <span class="px-2 py-1 text-xs bg-gray-800 rounded">Following</span>
+                        <span class="px-2 py-1 text-xs bg-amber-600 text-gray-900 rounded">Pro</span>
+                        <span> <a href="/logout"
+                                class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 
+                                       5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M18 12H9m9 0l-3 3m3-3l-3-3" />
+                                </svg>
+                                Logout
+                            </a></span>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="w-full max-w-md bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-700">
+                <h2 class="text-2xl font-semibold text-white mb-4">Write a Blog</h2>
+                <form action="/newpost" method="post">
+
+                    <div class="space-y-4">
+                        <!-- Blog Title -->
+                        <div>
+                            <label class="text-gray-300 text-sm">Blog Title</label>
+                            <input name="title" type="text" placeholder="Enter title..."
+                                class="w-full mt-1 px-4 py-2 rounded-xl bg-gray-700 text-white border border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                        </div>
+
+                        <!-- Blog Description -->
+                        <div>
+                            <label class="text-gray-300 text-sm">Description</label>
+                            <textarea rows="5" name="content" placeholder="Write something..."
+                                class="w-full mt-1 px-4 py-2 rounded-xl bg-gray-700 text-white border border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit"
+                            class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 transition rounded-xl text-white font-semibold">
+                            Publish Blog
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+
+
+
+
+        </header>
+
+
+
+
+        <!-- Cards grid -->
+        <%if(data.posts.length> 0){%>
+            <main>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <!-- Card (repeatable) -->
+                    <% data.posts.forEach(post=> {%>
+                        <article
+                            class="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl p-5 shadow-xl border border-gray-800 hover:scale-[1.01] transform transition">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <h2 class="text-lg font-bold">
+                                        <%= post.title.charAt(0).toUpperCase() + post.title.slice(1) %>
+                                    </h2>
+                                    <p class="text-sm text-gray-400 mt-1">
+                                        <%= post.content %>
+                                    </p>
+                                    <div class="mt-3 flex items-center gap-2 text-xs text-gray-400">
+                                        <span class="px-2 py-1 bg-gray-800 rounded">Universe</span>
+                                        <span class="px-2 py-1 bg-gray-800 rounded">Star</span>
+                                        <span class="px-2 py-1 bg-gray-800 rounded">Nebula</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col items-end gap-2">
+                                    <span class="text-xs text-gray-500">
+                                        <%= timeAgo(post.date) %>
+                                    </span>
+                                    <button
+                                        class="like-btn flex items-center gap-2 px-3 py-1 rounded-full bg-gray-800 hover:bg-gray-700 text-sm"
+                                        data-id="<%= post._id %>" aria-pressed="<%= post.likes.includes(user._id) %>">
+                                        <svg class="like-heart w-5 h-5 stroke-current" viewBox="0 0 24 24"
+                                            fill="<%= post.likes.includes(user._id) ? '#ef4444' : 'none' %>"
+                                            stroke-width="1.5">
+                                            <path
+                                                d="M12 21s-7-4.35-9.5-7.5C-1.5 9 3 4 7 6.5 9.5 8 12 11 12 11s2.5-3 5-4.5C21 4 25.5 9 21.5 13.5 19 16.65 12 21 12 21z"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                        <span class="like-count">
+                                            <%= post.likes.length %>
+                                        </span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </article>
+                        <%})%>
+                </div>
+            </main>
+            <%} else {%>
+                <p class="text-gray-400">No posts yet!</p>
+
+                <%}%>
+
+
+                    <!-- footer small -->
+                    <footer class="mt-10 text-center text-sm text-gray-500">Made with ❤️ • Tailwind CSS • Dark mode
+                    </footer>
+    </div>
+
+    <!-- Like button JS -->
+    <script>
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const postId = btn.dataset.id;
+                const countEl = btn.querySelector('.like-count');
+                const heartEl = btn.querySelector('.like-heart');
+
+                try {
+                    const res = await fetch(`/newpost/like/${postId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include' // send cookies if using JWT in cookie
+                    });
+                    const data = await res.json();
+
+                    // Update UI
+                    countEl.textContent = data.likesCount;
+                    if (data.liked) {
+                        heartEl.setAttribute('fill', '#ef4444');
+                        heartEl.setAttribute('stroke', 'none');
+                    } else {
+                        heartEl.setAttribute('fill', 'none');
+                        heartEl.setAttribute('stroke', 'currentColor');
+                    }
+                } catch (err) {
+                    console.error("Error liking post", err);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

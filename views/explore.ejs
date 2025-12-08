@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dark Blog - Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* small helper to smooth the like button animation */
+        .like-heart {
+            transition: transform .12s ease, fill .12s ease, stroke .12s ease;
+        }
+
+        .like-heart:active {
+            transform: scale(.95);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-100 antialiased min-h-screen">
+
+
+  <header class=" p-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      
+      <!-- Left: Logo or site name -->
+      <div class="text-xl font-bold">
+        <!-- Dark Blog -->
+      </div>
+  
+      <!-- Right: Profile Button -->
+      <span>
+        <a href="/profile" class="bg-red-400 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition">
+          Profile
+        </a>
+      </span>
+  
+    </div>
+  </header>
+  
+  <section class="bg-gray-900 text-gray-100 py-20">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">
+            Explore the Universe of Posts
+        </h1>
+        <p class="text-gray-400 sm:text-lg mb-8">
+            Discover new ideas, stories, and knowledge from our community. Stay curious and inspired.
+        </p>
+        <div class="flex justify-center gap-4">
+            <a href="#posts"
+               class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition">
+               Browse Posts
+            </a>
+            <a href="/newpost/create"
+               class="px-6 py-3 border border-gray-600 hover:border-gray-400 rounded-lg font-medium transition">
+               Create Post
+            </a>
+        </div>
+    </div>
+
+</section>
+
+    <div class="max-w-6xl mx-auto p-6">
+
+        <!-- Cards grid -->
+        <%if(data.length > 0){%>
+            <main>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <!-- Card (repeatable) -->
+                    <% data.forEach(post=> {%>
+                        <article
+                            class="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl p-5 shadow-xl border border-gray-800 hover:scale-[1.01] transform transition">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <h2 class="text-lg font-bold">
+                                        <%= post.title.charAt(0).toUpperCase() + post.title.slice(1) %>
+                                    </h2>
+                                    <p class="text-sm text-gray-400 mt-1">
+                                        <%= post.content %>
+                                    </p>
+                                    <div class="mt-3 flex items-center gap-2 text-xs text-gray-400">
+                                        <span class="px-2 py-1 bg-gray-800 rounded">Universe</span>
+                                        <span class="px-2 py-1 bg-gray-800 rounded">Star</span>
+                                        <span class="px-2 py-1 bg-gray-800 rounded">Nebula</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col items-end gap-2">
+                                    <span class="text-xs text-gray-500">
+                                        <%= timeAgo(post.date) %>
+                                    </span>
+   
+
+                                </div>
+                            </div>
+                        </article>
+                        <%})%>
+                </div>
+            </main>
+            <%} else {%>
+                <p class="text-gray-400">No posts yet!</p>
+
+                <%}%>
+
+
+                    <!-- footer small -->
+                    <footer class="mt-10 text-center text-sm text-gray-500">Made with ❤️ • Tailwind CSS • Dark mode
+                    </footer>
+    </div>
+</body>
+
+</html>
