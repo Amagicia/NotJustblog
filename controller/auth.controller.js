@@ -53,8 +53,8 @@ const login = async (req, res, next) => {
         const ismatch = bcrypt.compare(password, user.password);
 
         if (!ismatch) {
-            res.status(400).json({ message: "Incorrect Password" });
-            res.redirect("/login"); // Add this to prevent further execution
+            return res.status(400).json({ message: "Incorrect Password" });
+            // res.redirect("/login"); // Add this to prevent further execution
         }
 
         /* ----------------------- Using JWT for Authrization ----------------------- */
@@ -84,7 +84,7 @@ const profile = async (req, res ) => {
 };
 
 const loginR = (req, res) => {
-    res.render("login"); // login.ejs page open hoga
+    return res.render("login"); // login.ejs page open hoga
 };
 
 

@@ -11,3 +11,9 @@ connectDB()
     .catch((err) => {
         console.log("error AA gya bhai ", err);
     });
+
+
+
+//     git add . 
+// git commit -m "Fix DB connection and server setup"
+//  git push origin main

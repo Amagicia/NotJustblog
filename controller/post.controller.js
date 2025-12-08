@@ -54,8 +54,8 @@ const explore = async (req, res, next) => {
     try {
         // const user = req.user.userId;
         let data = await Post.find().sort({ date: -1 });
-        console.log(data.length);
-        console.log(timeAgo(data[4].date));
+        // console.log(data.length);
+        // console.log(timeAgo(data[4].date));
         
         res.render('explore',{data,timeAgo});
         // res.status(200).json({ liked, likesCount: post.likes.length });
