@@ -60,7 +60,7 @@ const explore = async (req, res, next) => {
         counter.count++;
         await counter.save();
         // const user = req.user.userId;
-        let data = await Post.find().sort({ date: -1 });
+        let data = await Post.find().sort({ date: -1 }).populate('user');
         // console.log(data.length);
         // console.log(timeAgo(data[4].date));
         
