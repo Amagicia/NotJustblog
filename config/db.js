@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 
-export const connectDB = async () => {
+ const connectDB = async () => {
     try {
-        // await mongoose.connect("mongodb://127.0.0.1:27017/blog");
-        await mongoose.connect("mongodb+srv://mern_udemy:Mky67nWqN0omkrZ2@cluster0.coehnnm.mongodb.net/NotJustBlog");
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("🔥 MongoDB Connected Successfully");
     } catch (error) {
         console.error("❌ MongoDB Connection Error:", error);
         process.exit(1);
     }
 };
+
+export default connectDB;

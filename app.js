@@ -29,6 +29,7 @@ app.get("/api/total-visits", async (req, res) => {
 
 
 app.use((err, req, res, next) => {
+    
     res.status(400).json({
         success: false,
         error: err.message
