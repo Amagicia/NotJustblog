@@ -34,7 +34,7 @@ const register = async (req, res) => {
         const token = jwt.sign({ email: data.email, userId: data._id }, "abcd");
         res.cookie("Token", token);
 
-        res.redirect(`/profile/${data._id}`);
+        res.redirect(`/profile`);
     } catch (error) {
         next(error);
     }
