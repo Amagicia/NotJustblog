@@ -1,3 +1,4 @@
+import Counter from "../models/count.model.js";
 import { User } from "../models/user.model.js";
 import { Post } from "../models/post.model.js";
 
@@ -52,12 +53,18 @@ const likePost = async (req, res, next) => {
 import { timeAgo } from "./auth.controller.js"; 
 const explore = async (req, res, next) => {
     try {
+        let counter = await Counter.findOne({ name: "totalVisits" });
+        if (!counter) {
+            counter = new Counter({ name: "totalVisits", count: 0 });
+        }
+        counter.count++;
+        await counter.save();
         // const user = req.user.userId;
         let data = await Post.find().sort({ date: -1 });
         console.log(data.length);
         console.log(timeAgo(data[4].date));
         
-        res.render('explore',{data,timeAgo});
+        res.render('explore',{data,timeAgo, totalVisits: counter.count });
         // res.status(200).json({ liked, likesCount: post.likes.length });
     } catch (err) {
         next(err);
