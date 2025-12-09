@@ -86,6 +86,9 @@ const profile = async (req, res ) => {
 const loginR = (req, res) => {
     return res.render("login"); // login.ejs page open hoga
 };
+const Rregister = (req, res) => {
+    return res.render("index"); // login.ejs page open hoga
+};
 
 
 
@@ -112,4 +115,4 @@ function timeAgo(date) {
 return "just now";
 }
   
-export { register,login, profile, logout,loginR ,timeAgo};
+export { register,login, profile, logout,loginR ,Rregister,timeAgo};
