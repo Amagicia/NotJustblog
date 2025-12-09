@@ -39,7 +39,7 @@
             <div class="text-xl font-bold">
                 <!-- Dark Blog -->
             </div>
-<span class="font-semibold "><a href="/profile"
+            <span class="font-semibold "><a href="/profile"
                     class="bg-white text-gray-800 px-9 py-3 hover:bg-gray-200 hover:font-bold hover:text-gray-800 rounded-full shadow-lg flex items-center gap-2 ">
                     Profile
                 </a>
@@ -81,9 +81,12 @@
                         <article
                             class="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl p-5 shadow-xl border border-gray-800 hover:scale-[1.01] transform transition">
                             <div class="flex items-start justify-between gap-4">
-                                <div>
+                                <div id="posts">
                                     <div class="mt-3 flex items-center gap-2 text-xs text-white-400">
-                                    <span class="px-2 py-1 bg-gray-900 rounded"> <%= post.user.username %></span></div>
+                                        <span class="px-2 py-1 bg-gray-900 rounded">
+                                            <%= post.user.username %>
+                                        </span>
+                                    </div>
                                     <h2 class="text-lg font-bold">
                                         <%= post.title.charAt(0).toUpperCase() + post.title.slice(1) %>
                                     </h2>
@@ -91,7 +94,7 @@
                                         <%= post.content %>
                                     </p>
                                     <div class="mt-3 flex items-center gap-2 text-xs text-gray-400">
-                                       
+
                                         <span class="px-2 py-1 bg-gray-800 rounded">Universe</span>
                                         <span class="px-2 py-1 bg-gray-800 rounded">Star</span>
                                         <span class="px-2 py-1 bg-gray-800 rounded">Nebula</span>
@@ -137,6 +140,21 @@
 
         // Update every 5 seconds
         setInterval(updateCounter, 5000);
+
+
+        const deviceId = localStorage.getItem("deviceId");
+
+fetch("/track/track", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ deviceId })
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error(err));
+
     </script>
 
 

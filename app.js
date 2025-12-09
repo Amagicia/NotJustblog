@@ -19,6 +19,9 @@ app.set("view engine", "ejs"); // Replace 'ejs' with your preferred engine
 /* --------------------------------- Routes --------------------------------- */
 import auth from "./routes/auth.route.js";
 import newpost from "./routes/post.route.js"
+import track from "./routes/usertrack.route.js"
+
+app.use("/track",track)
 app.use("/",auth)
 app.use("/newpost",newpost)
 
