@@ -5,9 +5,11 @@ import jwt from "jsonwebtoken";
 const register = async (req, res) => {
     try {
         let { name, username, age, email, phone, password } = req.body;
-
+        if (!username || !name || !age || !phone || !email || !password) {
+            return res.status(400).send("All fields required");
+          }
         const user = await User.findOne({ email });
-        console.log("User  => ", user);
+        // console.log("User  => ", user);
 
         if (user) {
             res.status(400).json({ message: "User is Registered" });
