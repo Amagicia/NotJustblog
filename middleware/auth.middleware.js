@@ -11,6 +11,8 @@ const isloggedin = (req, res, next) => {
         }
         const decode = jwt.verify(token, "abcd");
         req.user = decode;
+        console.log(decode);
+        
         res.set("Cache-Control", "no-store");  
         next();
         

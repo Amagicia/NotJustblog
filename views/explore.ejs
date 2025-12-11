@@ -1,163 +1,312 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" class="dark">
-
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Dark Blog - Tailwind</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Neon Hub - Explore</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Outfit"', 'sans-serif'] },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'modal-pop': 'modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'border-spin': 'borderSpin 3s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        modalPop: {
+                            '0%': { opacity: '0', transform: 'scale(0.9) translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'scale(1) translateY(0)' },
+                        },
+                        borderSpin: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* small helper to smooth the like button animation */
-        .like-heart {
-            transition: transform .12s ease, fill .12s ease, stroke .12s ease;
+        body {
+            background-color: #030712;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(17, 24, 39, 1), rgba(3, 7, 18, 1));
         }
 
-        .like-heart:active {
-            transform: scale(.95);
+        /* Glass Panel */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
         }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 3D Tilt Effect on Hover */
+        .perspective-container {
+            perspective: 1000px;
+        }
+        .tilt-card {
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+        }
+        .tilt-card:hover {
+            transform: rotateX(2deg) rotateY(-2deg) scale(1.02);
+        }
+        
+        /* Grid Background Texture */
+        .grid-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     </style>
 </head>
 
-<body class="bg-gray-900 text-gray-100 antialiased min-h-screen">
-    <div class="w-full flex justify-end p-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-md">
-        <div class="bg-white text-gray-800 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-pulse">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20"
-                fill="currentColor">
-                <path
-                    d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm8-3a1 1 0 100 2 1 1 0 000-2zm0 4a1 1 0 00-.894.553l-2 4A1 1 0 007 16h6a1 1 0 00.894-1.447l-2-4A1 1 0 0010 11z" />
-            </svg>
-            <span id="visit-count" class="font-semibold">Users Served: <%= totalVisits %></span>
+<body class="text-gray-200 antialiased min-h-screen relative overflow-x-hidden selection:bg-cyan-500 selection:text-white">
+
+    <div class="fixed inset-0 grid-bg pointer-events-none -z-20"></div>
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div class="absolute top-0 left-1/3 w-[500px] h-[500px] bg-purple-600/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob"></div>
+        <div class="absolute bottom-0 right-1/3 w-[500px] h-[500px] bg-cyan-600/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="fixed top-6 right-6 z-50 animate-fade-in-up">
+        <div class="glass-panel px-4 py-2 rounded-full flex items-center gap-3 hover:border-cyan-500/30 transition-colors">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_10px_#22c55e]"></span>
+            </span>
+            <span id="visit-count" class="font-mono text-xs font-bold text-cyan-400 tracking-wider">
+                USERS SERVED: <%= totalVisits %>
+            </span>
         </div>
     </div>
 
-
-
-    <header class=" p-4">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-
-            <!-- Left: Logo or site name -->
-            <div class="text-xl font-bold">
-                <!-- Dark Blog -->
+    <header class="p-6 relative z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3 animate-fade-in-up">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-600 to-blue-700 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                </div>
+                <div class="hidden sm:block">
+                    <h1 class="text-xl font-bold text-white tracking-tight">NEON LABS</h1>
+                    <p class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">Research & Data</p>
+                </div>
             </div>
-            <span class="font-semibold "><a href="/profile"
-                    class="bg-white text-gray-800 px-9 py-3 hover:bg-gray-200 hover:font-bold hover:text-gray-800 rounded-full shadow-lg flex items-center gap-2 ">
-                    Profile
-                </a>
-            </span>
 
+            <a href="/profile" class="group relative px-8 py-3 rounded-full bg-slate-900 border border-slate-700 hover:border-cyan-500 transition-all duration-300 overflow-hidden shadow-2xl animate-fade-in-up">
+                <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
+                <span class="font-bold text-sm text-gray-200 group-hover:text-white transition-colors relative z-10 flex items-center gap-2">
+                    ACCESS PROFILE
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+            </a>
         </div>
     </header>
 
-    <section class="bg-gray-900 text-gray-100 py-20">
-        <div class="max-w-6xl mx-auto px-6 text-center">
-            <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">
-                Explore the Universe of Posts
+    <section class="relative py-24 text-center z-10">
+        <div class="max-w-5xl mx-auto px-6">
+            <h1 class="text-6xl sm:text-8xl font-black mb-8 tracking-tighter animate-fade-in-up" style="animation-delay: 0.1s;">
+                DISCOVER <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 filter drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">THE UNKNOWN</span>
             </h1>
-            <p class="text-gray-400 sm:text-lg mb-8">
-                Discover new ideas, stories, and knowledge from our community. Stay curious and inspired.
+            
+            <p class="text-gray-400 text-xl mb-12 max-w-2xl mx-auto font-light animate-fade-in-up" style="animation-delay: 0.2s;">
+                Access a decentralized network of thoughts, signals, and stories. <br /> Tap into the collective consciousness.
             </p>
-            <div class="flex justify-center gap-4">
-                <a href="#posts" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition">
-                    Browse Posts
+
+            <div class="flex flex-col sm:flex-row justify-center gap-6 animate-fade-in-up" style="animation-delay: 0.3s;">
+                <a href="#posts" class="px-10 py-4 bg-white text-black rounded-xl font-bold hover:bg-cyan-50 hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                    Start Exploring
                 </a>
-                <a href="/newpost/create"
-                    class="px-6 py-3 border border-gray-600 hover:border-gray-400 rounded-lg font-medium transition">
-                    Create Post
+                <a href="/newpost/create" class="px-10 py-4 glass-panel rounded-xl font-bold text-white hover:border-cyan-500/50 hover:text-cyan-400 hover:scale-105 transition-all flex items-center justify-center gap-2">
+                    Broadcast Signal
                 </a>
             </div>
         </div>
-
     </section>
 
-    <div class="max-w-6xl mx-auto p-6">
+    <div class="max-w-7xl mx-auto p-6 pb-32 relative z-10 perspective-container" id="posts">
+        
+        <% if(data.length > 0){ %>
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <% data.forEach((post, index) => { %>
+            <textarea id="hidden-title-<%= post._id %>" class="hidden"><%= post.title %></textarea>
+            <textarea id="hidden-content-<%= post._id %>" class="hidden"><%= post.content %></textarea>
 
-        <!-- Cards grid -->
-        <%if(data.length> 0){%>
-            <main>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <article 
+                onclick="openModal('<%= post._id %>')"
+                class="tilt-card group relative flex flex-col glass-panel rounded-3xl p-8 hover:border-cyan-500/40 cursor-pointer overflow-hidden animate-fade-in-up" 
+                style=`animation-delay: <%= (index * 0.1) + 0.4 %>s;`>
+                
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl group-hover:bg-cyan-500/40 transition-colors"></div>
 
-                    <!-- Card (repeatable) -->
-                    <% data.forEach(post=> {%>
-                        <article
-                            class="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl p-5 shadow-xl border border-gray-800 hover:scale-[1.01] transform transition">
-                            <div class="flex items-start justify-between gap-4">
-                                <div id="posts">
-                                    <div class="mt-3 flex items-center gap-2 text-xs text-white-400">
-                                        <span class="px-2 py-1 bg-gray-900 rounded">
-                                            <%= post.user.username %>
-                                        </span>
-                                    </div>
-                                    <h2 class="text-lg font-bold">
-                                        <%= post.title.charAt(0).toUpperCase() + post.title.slice(1) %>
-                                    </h2>
-                                    <p class="text-sm text-gray-400 mt-1">
-                                        <%= post.content %>
-                                    </p>
-                                    <div class="mt-3 flex items-center gap-2 text-xs text-gray-400">
-
-                                        <span class="px-2 py-1 bg-gray-800 rounded">Universe</span>
-                                        <span class="px-2 py-1 bg-gray-800 rounded">Star</span>
-                                        <span class="px-2 py-1 bg-gray-800 rounded">Nebula</span>
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-col items-end gap-2">
-                                    <span class="text-xs text-gray-500">
-                                        <%= timeAgo(post.date) %>
-                                    </span>
-                                    <span class="text-xs text-gray-500">
-                                        <%= post.likes.length %>
-                                    </span>
-
-
-                                </div>
-                            </div>
-                        </article>
-                        <%})%>
+                <div class="flex items-center gap-3 mb-6 relative z-10">
+                    <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-sm font-bold text-white border border-white/10 group-hover:border-cyan-500/50 transition-colors">
+                        <%= post.user.username.charAt(0).toUpperCase() %>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-gray-200 group-hover:text-cyan-400 transition-colors">
+                            @<%= post.user.username %>
+                        </h3>
+                        <p class="text-[10px] text-gray-500 font-mono uppercase tracking-wider">Verified Source</p>
+                    </div>
                 </div>
-            </main>
-            <%} else {%>
-                <p class="text-gray-400">No posts yet!</p>
 
-                <%}%>
+                <div class="flex-grow relative z-10 space-y-3">
+                    <h2 class="text-2xl font-bold text-white leading-tight group-hover:text-cyan-100 transition-colors">
+                        <%= post.title.charAt(0).toUpperCase() + post.title.slice(1) %>
+                    </h2>
+                    <p class="text-gray-400 text-sm leading-relaxed line-clamp-3 font-light">
+                        <%= post.content %>
+                    </p>
+                </div>
 
+                <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between relative z-10">
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-slate-800/50 rounded text-[10px] font-mono text-cyan-500 border border-cyan-500/10">DATA</span>
+                        <span class="px-2 py-1 bg-slate-800/50 rounded text-[10px] font-mono text-purple-500 border border-purple-500/10">LOG</span>
+                    </div>
 
-                    <!-- footer small -->
-                    <footer class="mt-10 text-center text-sm text-gray-500">Made with ❤️ • Tailwind CSS • Dark mode
-                    </footer>
+                    <div class="flex items-center gap-2 text-xs font-bold text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-pink-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                        </svg>
+                        <%= post.likes.length %>
+                    </div>
+                </div>
+                
+                <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-cyan-400 text-xs font-bold tracking-widest opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                    READ SIGNAL &rarr;
+                </div>
+            </article>
+            <% }) %>
+
+        </main>
+        <% } else { %>
+            <div class="flex flex-col items-center justify-center py-32 border-2 border-dashed border-gray-800 rounded-3xl bg-gray-900/30">
+                <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                    <svg class="w-10 h-10 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+                </div>
+                <p class="text-gray-500 font-mono text-lg">No signals detected in the sector.</p>
+                <a href="/newpost/create" class="mt-6 text-cyan-500 hover:text-cyan-400 text-sm font-bold uppercase tracking-wider border-b border-cyan-500 hover:border-cyan-400 pb-1">Initialize Transmission</a>
+            </div>
+        <% } %>
+
+        <footer class="mt-32 text-center">
+            <p class="text-xs text-gray-600 font-mono tracking-widest uppercase">
+                Secure Connection Established • Node 24.8.1
+            </p>
+        </footer>
+    </div>
+
+    <div id="modalBackdrop" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden transition-opacity duration-300" onclick="closeModal()"></div>
+
+    <div id="readModal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl z-[60] hidden">
+        <div class="bg-[#0b1121] border border-cyan-500/30 shadow-[0_0_100px_rgba(34,211,238,0.2)] rounded-3xl p-10 relative animate-modal-pop mx-4 overflow-hidden">
+            
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
+            <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl"></div>
+
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-2 transition-colors z-10">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div class="relative z-10">
+                <h2 id="modalTitle" class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-8 leading-tight"></h2>
+                
+                <div class="max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar">
+                    <p id="modalContent" class="text-gray-300 leading-8 text-lg font-light whitespace-pre-wrap"></p>
+                </div>
+
+                <div class="mt-10 pt-6 border-t border-white/10 flex justify-between items-center">
+                    <span class="text-xs font-mono text-cyan-500 animate-pulse">TRANSMISSION ENDED</span>
+                    <button onclick="closeModal()" class="px-8 py-2.5 rounded-xl bg-white text-black hover:bg-gray-200 font-bold text-sm transition-colors">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        // --- Modal Logic ---
+        const backdrop = document.getElementById('modalBackdrop');
+        const readModal = document.getElementById('readModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+
+        function openModal(id) {
+            // Get content from hidden textareas to allow quotes/emojis
+            const title = document.getElementById('hidden-title-' + id).value;
+            const content = document.getElementById('hidden-content-' + id).value;
+
+            modalTitle.textContent = title;
+            modalContent.textContent = content;
+
+            backdrop.classList.remove('hidden');
+            readModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Stop scrolling
+        }
+
+        function closeModal() {
+            backdrop.classList.add('hidden');
+            readModal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Resume scrolling
+        }
+
+        // --- Visit Counter ---
         async function updateCounter() {
             try {
                 const response = await fetch("/api/total-visits");
                 const data = await response.json();
-                document.getElementById("visit-count").innerText = `Users Served: ${data.count}`;
+                document.getElementById("visit-count").innerText = `USERS SERVED: ${data.count}`;
             } catch (err) {
-                console.error("Failed to update counter", err);
+                console.error("Signal Lost", err);
             }
         }
-
-        // Update every 5 seconds
         setInterval(updateCounter, 5000);
 
-
+        // --- Tracking ---
         const deviceId = localStorage.getItem("deviceId");
-
-fetch("/track/track", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ deviceId })
-})
-.then(res => res.json())
-.then(data => console.log(data))
-.catch(err => console.error(err));
-
+        if(deviceId) {
+            fetch("/track/track", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ deviceId })
+            }).catch(err => console.error(err));
+        }
     </script>
-
-
 </body>
-
 </html>

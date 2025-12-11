@@ -24,6 +24,21 @@ const newpost = async (req, res, next) => {
     }
 };
 
+const updatapost = async (req, res, next) => {
+    try {
+        const postid = req.params.id;
+        const {title,content}=req.body;
+        await Post.findByIdAndUpdate(
+            postid,
+            { title, content },
+            { new: true }
+        );
+        res.redirect('/profile')
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 const likePost = async (req, res, next) => {
     try {
@@ -80,4 +95,4 @@ const create = async (req, res, next) => {
 };
 
 
-export { newpost ,likePost,explore,create};
+export { newpost ,likePost,explore,updatapost,create};

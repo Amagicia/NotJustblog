@@ -6,6 +6,7 @@ import {
     loginR,
     Rregister,
     logout,
+    updateProfile
 } from "../controller/auth.controller.js";
 import { isloggedin } from "../middleware/auth.middleware.js";
 import { explore } from "../controller/post.controller.js";
@@ -20,6 +21,7 @@ route.get("/logout", isloggedin, logout);
 
 route.post("/register", register);
 route.post("/login", login);
+route.post("/updateProfile/:data",isloggedin, updateProfile);
 
 
 export default route;

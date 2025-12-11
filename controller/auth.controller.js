@@ -62,7 +62,7 @@ const login = async (req, res, next) => {
         /* ----------------------- Using JWT for Authrization ----------------------- */
         const token = jwt.sign({ email: user.email, userId: user._id }, "abcd");
         res.cookie("Token", token);
-
+        
         res.redirect(`/profile`);
     } catch (error) {
         next(error);
@@ -75,6 +75,33 @@ const logout = (req, res ) => {
     // res.json({ message: "Logged out successfully" });
 
 };
+
+const updateProfile = async (req, res,next ) => {
+    try {
+        
+        const userId = req.params.data;
+        const {name, username, age, phone, email}=req.body;
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { name, username, age, phone, email },
+            { new: true }
+        );
+        const token = jwt.sign(
+            { userId: updatedUser._id, email: updatedUser.email },
+            "abcd",
+            { expiresIn: "7d" }
+        );
+        res.cookie("Token", token);
+        // res.json({ success: true, user: updatedUser });
+        res.redirect("/profile"); // or the route that shows the profile
+
+
+    } catch (error) {
+        next(error)
+    }
+
+};
+
 const profile = async (req, res ) => {
 
     // console.log("UserID +>>>>>>>>> ",req.user.userId);
@@ -117,4 +144,4 @@ function timeAgo(date) {
 return "just now";
 }
   
-export { register,login, profile, logout,loginR ,Rregister,timeAgo};
+export { register,login, profile, logout,loginR ,Rregister,timeAgo,updateProfile};
