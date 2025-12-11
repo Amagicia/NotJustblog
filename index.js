@@ -17,3 +17,10 @@ connectDB()
 //     git add . 
 // git commit -m "Fix DB connection and server setup"
 //  git push origin main
+
+
+// <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=<%= post.user.username %>&backgroundColor=transparent" 
+// loading="lazy" 
+// alt="Cartoon Avatar"
+// onload="this.classList.remove('opacity-0')"
+// class="w-full h-full object-cover opacity-0 transition-all duration-700 group-hover:scale-110">
