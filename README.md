@@ -68,3 +68,5 @@ https://notjustblog.onrender.com/
 
 
 
+
+<img width="1366" height="676" alt="Screenshot (303)" src="https://github.com/user-attachments/assets/4863ec3b-8a60-41e2-b557-b00d3acac22b" />
