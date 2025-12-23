@@ -1,0 +1,2 @@
+This project is built to understand and practice backend development using Node.js and Express.js, along with MongoDB for data storage and JWT for authentication. Through this project, key concepts such as API creation, user authentication, and data management were learned and implemented in a practical way.
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/013a1d34-9786-4d87-8b4a-a4b4821e30c3" />
